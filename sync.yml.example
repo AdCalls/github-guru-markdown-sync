@@ -1,0 +1,26 @@
+name: Sync guru cards
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - README.md
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - id: getreadme
+        run: |
+          delimiter=$(openssl rand -hex 8)
+          echo -e "READMECONTENT<<${delimiter}\n$(cat README.md)\n${delimiter}" >> "$GITHUB_ENV"
+      - id: sync
+        uses: AdCalls/github-guru-two-way-sync@main
+        env: 
+          README: ${{ env.READMECONTENT }}
+          GURU_USER_EMAIL: ${{ secrets.GURU_USER_EMAIL }}
+          GURU_USER_TOKEN: ${{ secrets.GURU_USER_TOKEN }}
+          GURU_COLLECTION_ID: ${{ secrets.GURU_COLLECTION_ID }}
+          GURU_FOLDER_ID: ${{ secrets.GURU_FOLDER_ID }}
+          REPO_NAME: ${{ github.repository }}

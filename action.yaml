@@ -1,0 +1,9 @@
+name: 'GitHub Guru markdown sync'
+description: 'Sync repo README to Guru'
+author: 'Marco-K1'
+branding:
+  icon: 'copy'
+  color: 'green'
+runs:
+  using: 'node20'
+  main: 'index.js'
